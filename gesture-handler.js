@@ -1,6 +1,5 @@
 /* global AFRAME, THREE */
-//modified from same place as gesture detector
-
+//modified from same place as gesture
 AFRAME.registerComponent("gesture-handler", {
     schema: {
       enabled: { default: true },
@@ -12,29 +11,25 @@ AFRAME.registerComponent("gesture-handler", {
     init: function () {
       this.handleScale = this.handleScale.bind(this);
       this.handleRotation = this.handleRotation.bind(this);
-
+  
       this.isVisible = false;
-      this.isIntersecting = false; // Initial state
       this.initialScale = this.el.object3D.scale.clone();
       this.scaleFactor = 1;
-
-      // Event listeners for AR marker visibility
-      this.el.sceneEl.addEventListener("markerFound", () => {
+  
+      this.el.sceneEl.addEventListener("markerFound", (e) => {
         this.isVisible = true;
       });
-
-      this.el.sceneEl.addEventListener("markerLost", () => {
+  
+      this.el.sceneEl.addEventListener("markerLost", (e) => {
         this.isVisible = false;
       });
 
-      // Event listeners for raycaster intersection
       this.el.addEventListener('raycaster-intersected', () => {
         this.isIntersecting = true;
-      });
-
-      this.el.addEventListener('raycaster-intersected-cleared', () => {
+    });
+    this.el.addEventListener('raycaster-intersected-cleared', () => {
         this.isIntersecting = false;
-      });
+    });
     },
   
     update: function () {
@@ -53,7 +48,7 @@ AFRAME.registerComponent("gesture-handler", {
     },
   
     handleRotation: function (event) {
-      if (this.isVisible && this.isIntersecting) {
+      if (this.isVisible) {
         this.el.object3D.rotation.y +=
           event.detail.positionChange.x * this.data.rotationFactor;
         this.el.object3D.rotation.x +=
@@ -62,7 +57,7 @@ AFRAME.registerComponent("gesture-handler", {
     },
   
     handleScale: function (event) {
-      if (this.isVisible && this.isIntersecting) {
+      if (this.isVisible) {
         this.scaleFactor *=
           1 + event.detail.spreadChange / event.detail.startSpread;
   
@@ -76,4 +71,4 @@ AFRAME.registerComponent("gesture-handler", {
         this.el.object3D.scale.z = this.scaleFactor * this.initialScale.z;
       }
     },
-});
+  });
