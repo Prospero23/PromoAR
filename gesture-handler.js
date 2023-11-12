@@ -1,4 +1,5 @@
 /* global AFRAME, THREE */
+//modified from same place as gesture detector
 
 AFRAME.registerComponent("gesture-handler", {
     schema: {
@@ -11,17 +12,28 @@ AFRAME.registerComponent("gesture-handler", {
     init: function () {
       this.handleScale = this.handleScale.bind(this);
       this.handleRotation = this.handleRotation.bind(this);
-  
+
       this.isVisible = false;
+      this.isIntersecting = false; // Initial state
       this.initialScale = this.el.object3D.scale.clone();
       this.scaleFactor = 1;
-  
-      this.el.sceneEl.addEventListener("markerFound", (e) => {
+
+      // Event listeners for AR marker visibility
+      this.el.sceneEl.addEventListener("markerFound", () => {
         this.isVisible = true;
       });
-  
-      this.el.sceneEl.addEventListener("markerLost", (e) => {
+
+      this.el.sceneEl.addEventListener("markerLost", () => {
         this.isVisible = false;
+      });
+
+      // Event listeners for raycaster intersection
+      this.el.addEventListener('raycaster-intersected', () => {
+        this.isIntersecting = true;
+      });
+
+      this.el.addEventListener('raycaster-intersected-cleared', () => {
+        this.isIntersecting = false;
       });
     },
   
@@ -41,7 +53,7 @@ AFRAME.registerComponent("gesture-handler", {
     },
   
     handleRotation: function (event) {
-      if (this.isVisible) {
+      if (this.isVisible && this.isIntersecting) {
         this.el.object3D.rotation.y +=
           event.detail.positionChange.x * this.data.rotationFactor;
         this.el.object3D.rotation.x +=
@@ -50,7 +62,7 @@ AFRAME.registerComponent("gesture-handler", {
     },
   
     handleScale: function (event) {
-      if (this.isVisible) {
+      if (this.isVisible && this.isIntersecting) {
         this.scaleFactor *=
           1 + event.detail.spreadChange / event.detail.startSpread;
   
@@ -64,4 +76,4 @@ AFRAME.registerComponent("gesture-handler", {
         this.el.object3D.scale.z = this.scaleFactor * this.initialScale.z;
       }
     },
-  });
+});
