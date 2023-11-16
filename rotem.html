@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROTEM</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="gesture-detector.js"></script>
+    <script src="gesture-handler.js"></script>
+</head>
+<body>
+    <a-scene
+      arjs
+      renderer="logarithmicDepthBuffer: true;"
+      vr-mode-ui="enabled: false"
+      gesture-detector
+      id="scene"
+    >
+      <!-- Rotem model -->
+      <a-assets>
+        <a-asset-item id="rotem" src="model/rotem.glb"></a-asset-item>
+      </a-assets>
+        <!-- content -->
+        <a-entity gltf-model="#rotem"
+          position="0 0 0"
+          class="clickable"
+          scale = "0.5 0.5 0.5"
+          gesture-handler
+          raycaster="objects: .clickable"></a-entity>   
+        <!-- define a camera which will move according to the marker position -->
+        <a-marker-camera preset='hiro'></a-marker-camera>
+      </a-scene>
+</body>
+</html>
+
+<!-- click model to open poLL. Once submitted to poll -> text me -->
