@@ -5,7 +5,7 @@ AFRAME.registerComponent("gesture-handler", {
       enabled: { default: true },
       rotationFactor: { default: 5 },
       minScale: { default: 0.3 },
-      maxScale: { default: 1 },
+      maxScale: { default: 3 },
     },
   
     init: function () {
@@ -23,13 +23,6 @@ AFRAME.registerComponent("gesture-handler", {
       this.el.sceneEl.addEventListener("markerLost", (e) => {
         this.isVisible = false;
       });
-
-      this.el.addEventListener('raycaster-intersected', () => {
-        this.isIntersecting = true;
-    });
-    this.el.addEventListener('raycaster-intersected-cleared', () => {
-        this.isIntersecting = false;
-    });
     },
   
     update: function () {
