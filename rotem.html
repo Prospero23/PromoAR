@@ -6,8 +6,28 @@
     <title>ROTEM</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="gesture-detector.js"></script>
-    <script src="gesture-handler.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.1.0/dist/aframe-extras.min.js"></script>
+    <script src="js/gesture-detector.js"></script>
+    <script src="js/gesture-handler.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #scene {
+            width: 100%;
+            height: 100%;
+            position: relative; /* Needed for absolute positioning inside */
+        }
+        p {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
     <a-scene
@@ -16,6 +36,7 @@
       vr-mode-ui="enabled: false"
       gesture-detector
       id="scene"
+      embedded
     >
       <!-- Rotem model -->
       <a-assets>
@@ -25,12 +46,15 @@
         <a-entity gltf-model="#rotem"
           position="0 0 0"
           class="clickable"
-          scale = "0.5 0.5 0.5"
+          scale = "0.8 0.8 0.8"
           gesture-handler
+          animation-mixer = "crossFadeDuration: 1"
+
           raycaster="objects: .clickable"></a-entity>   
         <!-- define a camera which will move according to the marker position -->
         <a-marker-camera preset='hiro'></a-marker-camera>
       </a-scene>
+      <p>FIND HIRO!</p>
 </body>
 </html>
 
